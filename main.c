@@ -35,7 +35,7 @@ uint16_t start_flag=0;
 uint16_t stop_flag=0;
 
 int Turn_on_flag=0;
-
+float f_test=0;
 int16 SpeedRef=100;//rpm
 float Vq_test=0;
 float VdTesting=0;
@@ -334,9 +334,14 @@ __interrupt void CANA_ISR(void)
         {
             VqTesting=0.01*(((cana_rx_data[1]<<8)& 0xFF00)+(cana_rx_data[0]&0x00FF));
         }
+        else if (msgID == 0x14)
+        {
+            f_test = bsp_can_receive_one_float(cana_rx_data);
+        }
         // 接收数据
         //CAN_readMessage(CANA_BASE, CANA_RX_MSG_OBJ_ID, cana_rx_data);
         /////  必须要清除中断   ！！！！！！！！
+
         CAN_clearInterruptStatus(CANA_BASE, cana_isr_status);
         cana_rx_count++;
         cana_error_flag = 0;

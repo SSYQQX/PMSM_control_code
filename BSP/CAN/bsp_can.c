@@ -121,6 +121,15 @@ void bsp_can_init(void)
                            2   //数据长度
     );
 
+    CAN_setupMessageObject(CANA_BASE,
+                           CANA_RX_MSG_OBJ_f_ID,
+                           0x14,                  // 消息 ID
+                           CAN_MSG_FRAME_STD,     // 标准帧格式
+                           CAN_MSG_OBJ_TYPE_RX,   // 接收类型
+                           0,                     // 无掩码
+                           CAN_MSG_OBJ_RX_INT_ENABLE,//启用接收中断
+                           4   //数据长度
+    );
     //----------------------------
     // 5. 启动 CAN 模块
     //----------------------------
@@ -217,5 +226,18 @@ void bsp_can_send_two_floats(float f1, float f2, uint32_t msgID,uint32_t MSG_OBJ
 
     // 发送数据（注意数据长度以“字节”为单位）
     bsp_can_send(msgData, 8,MSG_OBJ_ID);
+}
+
+float bsp_can_receive_one_float(uint16_t *data)
+{
+    union {
+        float f;
+        uint16_t bytes[2];
+    } fu;
+
+    fu.bytes[0] = (uint16_t)((data[0] & 0x00FF)+(data[1]<<8 & 0xFF00));
+    fu.bytes[1] = (uint16_t)((data[2] & 0x00FF)+(data[3]<<8 & 0xFF00));
+
+    return fu.f;
 }
 

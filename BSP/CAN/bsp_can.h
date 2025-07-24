@@ -19,7 +19,7 @@
 #define CANA_RX_MSG_OBJ_Stop_ID      11
 #define CANA_RX_MSG_OBJ_SpeedRef_ID  12
 #define CANA_RX_MSG_OBJ_VqTesting_ID  13
-
+#define CANA_RX_MSG_OBJ_f_ID  14
 
 #define CANA_MSG_DATA_LENGTH   8
 
@@ -42,7 +42,7 @@ void bsp_can_send(uint16_t *data, uint16_t len,uint32_t MSG_OBJ_ID);
 
 void bsp_can_send_float(float value, uint32_t msgID,uint32_t MSG_OBJ_ID);
 void bsp_can_send_two_floats(float f1, float f2, uint32_t msgID,uint32_t MSG_OBJ_ID);
-
+float bsp_can_receive_one_float(uint16_t *data);
 // 中断服务函数，供外部注册
 __interrupt void CANA_ISR(void);
 
